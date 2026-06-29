@@ -1,24 +1,25 @@
-import Button from "./ui/Button";
+import Container from "./ui/Container";
+import hero from "@/data/hero";
+
+import HeroContent from "./hero/HeroContent";
+import HeroImage from "./hero/HeroImage";
 
 export default function Hero() {
   return (
-    <section className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-6 text-center">
-      <h1 className="mb-4 text-6xl font-bold">
-        More Than Seen
-      </h1>
+    <section className="relative overflow-hidden py-24 lg:py-32">
+      <Container>
+        <div className="grid items-center gap-20 lg:grid-cols-2">
+          <HeroContent
+            badge={hero.badge}
+            title={hero.title}
+            description={hero.description}
+            primaryButton={hero.primaryButton}
+            secondaryButton={hero.secondaryButton}
+          />
 
-      <p className="mb-2 text-2xl text-gray-700">
-        Reality Runs Deeper.
-      </p>
-
-      <p className="mb-8 text-gray-500">
-        Science • Technology • Space • Psychology
-      </p>
-
-      <div className="flex gap-4">
-        <Button text="Explore Collection" />
-        <Button text="Learn More" />
-      </div>
+          <HeroImage image={hero.image} />
+        </div>
+      </Container>
     </section>
   );
-}
+} 
