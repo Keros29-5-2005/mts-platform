@@ -3,15 +3,10 @@
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 
+import type { Product } from "@/types/product";
+
 type AddToCartButtonProps = {
-  product: {
-    id: number;
-    slug: string;
-    name: string;
-    price: string;
-    image: string;
-    description: string;
-  };  
+  product: Product;
 };
 
 export default function AddToCartButton({

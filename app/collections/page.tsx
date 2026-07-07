@@ -1,37 +1,138 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
+import products from "@/data/products";
+
 import Container from "@/components/ui/Container";
-import FeaturedCategories from "@/components/FeaturedCategories";
+import SectionHeader from "@/components/ui/SectionHeader";
+
+import SearchBar from "@/components/collections/SearchBar";
+import CategoryFilter from "@/components/collections/CategoryFilter";
+import SortDropdown from "@/components/collections/SortDropdown";
+import ProductGrid from "@/components/collections/ProductGrid";
+
+import { useSearchParams } from "next/navigation";
 
 export default function CollectionsPage() {
+  const searchParams = useSearchParams();
+  const initialSearch =
+    searchParams.get("search") ?? "";
+    
+  const [search, setSearch] =
+    useState(initialSearch);
+
+  const [selectedCategory, setSelectedCategory] =
+    useState("All");
+
+  const [sortBy, setSortBy] =
+    useState("featured");
+
+  // Categories
+  const categories = useMemo(() => {
+    return [
+      "All",
+      ...new Set(
+        products.map(
+          (product) => product.category
+        )
+      ),
+    ];
+  }, []);
+
+  // Filter + Sort
+  const filteredProducts = useMemo(() => {
+    let filtered = [...products];
+
+    // Search
+    if (search.trim()) {
+      filtered = filtered.filter((product) =>
+        product.name
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
+    }
+
+    // Category
+    if (selectedCategory !== "All") {
+      filtered = filtered.filter(
+        (product) =>
+          product.category === selectedCategory
+      );
+    }
+
+    // Sorting
+    switch (sortBy) {
+      case "price-low":
+        filtered.sort(
+          (a, b) => a.price - b.price
+        );
+        break;
+
+      case "price-high":
+        filtered.sort(
+          (a, b) => b.price - a.price
+        );
+        break;
+
+      case "name":
+        filtered.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        break;
+
+      case "featured":
+      default:
+        filtered.sort(
+          (a, b) =>
+            Number(b.featured) -
+            Number(a.featured)
+        );
+    }
+
+    return filtered;
+  }, [
+    search,
+    selectedCategory,
+    sortBy,
+  ]);
+
   return (
-    <main>
+    <main className="py-20">
 
-      {/* Hero Section */}
-      <section className="py-28 text-center">
+      <Container>
 
-        <Container>
+        <SectionHeader
+          label="Our Collection"
+          title="Discover More Than Seen"
+          description="Explore science-inspired apparel crafted for curious minds."
+        />
 
-          <p className="uppercase tracking-[0.4em] text-orange-400 text-sm">
-            Collections
-          </p>
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+        />
 
-          <h1 className="text-5xl md:text-7xl font-bold mt-6">
-            Choose Your
-            <br />
-            Curiosity
-          </h1>
+        <CategoryFilter
+          categories={categories}
+          selectedCategory={
+            selectedCategory
+          }
+          onSelect={
+            setSelectedCategory
+          }
+        />
 
-          <p className="max-w-2xl mx-auto mt-6 text-gray-400 text-lg">
-            Explore products inspired by science,
-            discovery, mystery and the universe beyond
-            what we normally see.
-          </p>
+        <SortDropdown
+          value={sortBy}
+          onChange={setSortBy}
+        />
 
-        </Container>
+        <ProductGrid
+          products={filteredProducts}
+        />
 
-      </section>
-
-      {/* Categories */}
-      <FeaturedCategories />
+      </Container>
 
     </main>
   );

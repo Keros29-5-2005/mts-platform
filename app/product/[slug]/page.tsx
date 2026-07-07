@@ -2,6 +2,7 @@ import products from "@/data/products";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import AddToCartButton from "@/components/AddToCartButton";
+import { formatPrice } from "@/lib/formatPrice";
 
 type PageProps = {
   params: Promise<{
@@ -65,7 +66,7 @@ export default async function ProductPage({
             </p>
 
             <p className="mt-8 text-3xl font-semibold text-orange-400">
-              {product.price}
+              {formatPrice(product.price)}
             </p>
 
             <AddToCartButton product={product} />
@@ -121,7 +122,7 @@ export default async function ProductPage({
                     </h3>
 
                     <p className="mt-2 text-orange-400">
-                      {item.price}
+                      {formatPrice(item.price)}
                     </p>
 
                   </div>

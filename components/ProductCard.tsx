@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/formatPrice";
 
 type ProductCardProps = {
   slug: string;
   name: string;
-  price: string;
+  price: number;
   image: string;
 };
 
@@ -33,7 +34,7 @@ export default function ProductCard({
         </h3>
 
         <p className="mt-2 text-orange-400">
-          {price}
+          {formatPrice(price)}
         </p>
 
         <Link href={`/product/${slug}`}>
