@@ -1,3 +1,5 @@
+import FadeUp from "@/components/animations/FadeUp";
+
 import HeroBadge from "./HeroBadge";
 import HeroButtons from "./HeroButtons";
 
@@ -18,20 +20,30 @@ export default function HeroContent({
 }: HeroContentProps) {
   return (
     <div className="max-w-2xl">
-      <HeroBadge text={badge} />
 
-      <h1 className="mt-8 text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">
-        {title}
-      </h1>
+      <FadeUp>
+        <HeroBadge text={badge} />
+      </FadeUp>
 
-      <p className="mt-8 text-lg leading-8 text-gray-400">
-        {description}
-      </p>
+      <FadeUp delay={0.15}>
+        <h1 className="mt-8 text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">
+          {title}
+        </h1>
+      </FadeUp>
 
-      <HeroButtons
-        primary={primaryButton}
-        secondary={secondaryButton}
-      />
+      <FadeUp delay={0.3}>
+        <p className="mt-8 text-lg leading-8 text-gray-400">
+          {description}
+        </p>
+      </FadeUp>
+
+      <FadeUp delay={0.45}>
+        <HeroButtons
+          primary={primaryButton}
+          secondary={secondaryButton}
+        />
+      </FadeUp>
+
     </div>
   );
 }

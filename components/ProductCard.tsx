@@ -1,50 +1,88 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import { formatPrice } from "@/lib/formatPrice";
 
+import FadeUp from "@/components/animations/FadeUp";
+import HoverLift from "@/components/animations/HoverLift";
+import WishlistButton from "./WishlistButton";
+
+import type { Product } from "@/types/product";
+
 type ProductCardProps = {
-  slug: string;
-  name: string;
-  price: number;
-  image: string;
+  product: Product;
 };
 
 export default function ProductCard({
-  slug,
-  name,
-  price,
-  image,
+  product,
 }: ProductCardProps) {
+  const {
+    slug,
+    name,
+    price,
+    image,
+  } = product;
+
   return (
-    <div className="group overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 transition duration-300 hover:-translate-y-2 hover:border-orange-400">
+    <FadeUp>
+      <HoverLift>
 
-      <div className="relative h-72 overflow-hidden">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className="object-cover transition duration-500 group-hover:scale-110"
-        />
-      </div>
+        <div className="group overflow-hidden rounded-3xl border border-white/10 bg-zinc-900 transition-all duration-500 hover:border-orange-400 hover:shadow-[0_20px_60px_rgba(249,115,22,0.18)]">
 
-      <div className="p-6">
+          {/* Product Image */}
 
-        <h3 className="text-xl font-semibold text-white">
-          {name}
-        </h3>
+          <div className="relative h-72 overflow-hidden">
 
-        <p className="mt-2 text-orange-400">
-          {formatPrice(price)}
-        </p>
+            <WishlistButton product={product} />
 
-        <Link href={`/product/${slug}`}>
-          <button className="mt-6 w-full rounded-full border border-white/20 py-3 text-white transition hover:bg-white hover:text-black">
-            View Product
-          </button>
-        </Link>
+            <Image
+              src={image}
+              alt={name}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            />
 
-      </div>
+          </div>
 
-    </div>
+          {/* Product Details */}
+
+          <div className="p-6">
+
+            <h3 className="text-xl font-semibold text-white transition-colors duration-300 group-hover:text-orange-300">
+              {name}
+            </h3>
+
+            <p className="mt-2 text-orange-400">
+              {formatPrice(price)}
+            </p>
+
+            <Link href={`/product/${slug}`}>
+              <button
+                className="
+                  mt-6
+                  w-full
+                  rounded-full
+                  border
+                  border-white/20
+                  py-3
+                  font-medium
+                  text-white
+                  transition-all
+                  duration-300
+                  hover:bg-white
+                  hover:text-black
+                  group-hover:-translate-y-1
+                "
+              >
+                View Product
+              </button>
+            </Link>
+
+          </div>
+
+        </div>
+
+      </HoverLift>
+    </FadeUp>
   );
 }
